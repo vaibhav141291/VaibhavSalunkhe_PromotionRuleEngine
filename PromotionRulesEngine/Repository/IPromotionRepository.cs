@@ -6,5 +6,7 @@ namespace PromotionRulesEngine
 {
     public interface IPromotionRepository
     {
+
+
     }
 }
