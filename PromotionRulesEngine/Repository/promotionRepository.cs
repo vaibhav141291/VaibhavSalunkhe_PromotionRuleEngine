@@ -39,6 +39,31 @@ namespace PromotionRulesEngine
         }
 
 
+        /// <summary>
+        /// This method calculates the discount for Product B and apply the discount. 
+        /// Discount will bw applied, If the discount amount is grater than ProductA discount amount.
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
+        public List<Product> ApplyPromoToProductB(ref List<Product> cart)
+        {
+            if (cart.Any(x => x.ProductCode.Equals(Constants.ProductCode_B, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                Product product = cart.Where(x => x.ProductCode.Equals(Constants.ProductCode_B, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                int temp = product.Quantity / 2;
+                int tempDiscount;
+                if (temp != 0)
+                {
+                    tempDiscount = temp * 15;
+                    return ApplyPromo(ref cart, tempDiscount, Constants.ProductCode_B);
+                }
+            }
+
+            return cart;
+        }
+
+
+
         private List<Product> ApplyPromo(ref List<Product> Cart, int DiscountAmount, string ProductCode)
         {
             if (Cart.All(x => x.Discount <= 0) || !Cart.Any(x => x.Discount >= DiscountAmount))

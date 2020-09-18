@@ -9,5 +9,7 @@ namespace PromotionRulesEngine
     {
         List<Product> ApplyPromoToProductA(ref List<Product> cart);
 
+        List<Product> ApplyPromoToProductB(ref List<Product> cart);
+
     }
 }
