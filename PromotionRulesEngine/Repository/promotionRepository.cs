@@ -62,6 +62,40 @@ namespace PromotionRulesEngine
             return cart;
         }
 
+        /// <summary>
+        /// No need to apply any logic here because the discount will be applicable if user selects C & D products togather.
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
+        public List<Product> ApplyPromoToProductC(ref List<Product> cart)
+        {
+            return cart;
+        }
+
+        /// <summary>
+        /// It calculates combine discount on ProductC and Product D and  applies to the cart.
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
+        public List<Product> ApplyPromoToProductD(ref List<Product> cart)
+        {
+            if (cart.Any(x => x.ProductCode.Equals(Constants.ProductCode_C, StringComparison.InvariantCultureIgnoreCase))
+                && cart.Any(x => x.ProductCode.Equals(Constants.ProductCode_D, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                Product productC = cart.Where(x => x.ProductCode.Equals(Constants.ProductCode_C, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                Product productD = cart.Where(x => x.ProductCode.Equals(Constants.ProductCode_D, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                if (productC.Quantity > productD.Quantity)
+                {
+                    return ApplyPromo(ref cart, (productD.Quantity * 5), Constants.ProductCode_D);
+                }
+                else
+                {
+                    return ApplyPromo(ref cart, (productC.Quantity * 5), Constants.ProductCode_D);
+                }
+            }
+
+            return cart;
+        }
 
 
         private List<Product> ApplyPromo(ref List<Product> Cart, int DiscountAmount, string ProductCode)

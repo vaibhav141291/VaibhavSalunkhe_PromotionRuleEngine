@@ -43,5 +43,16 @@ namespace PromotionRulesEngineTest
             Assert.ReferenceEquals(result, expectedResult);
 
         }
+
+
+        [TestMethod]
+        public void Scenario2() { }
+
+
+        [TestMethod]
+        public void Scenario3() { }
+
+        [TestMethod]
+        public void Scenario4() { }
     }
 }
