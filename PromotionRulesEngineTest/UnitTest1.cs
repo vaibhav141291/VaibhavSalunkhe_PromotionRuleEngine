@@ -12,7 +12,8 @@ namespace PromotionRulesEngineTest
     {
         PromotionRepository promotionRepository = new PromotionRepository();
         Product product = new Product();
-        List<Product> expectedResult = new List<Product>();
+        //expected discount Amount
+        int expectedResult;
 
 
         /// <summary>
@@ -24,27 +25,58 @@ namespace PromotionRulesEngineTest
             List<Product> Cart = new List<Product>();
             product = new Product() { ProductCode = "A", Quantity = 1, Amount = 50 };
             Cart.Add(product);
-            product = new Product() { ProductCode = "b", Quantity = 1, Amount = 30};
+            product = new Product() { ProductCode = "b", Quantity = 1, Amount = 30 };
             Cart.Add(product);
             product = new Product() { ProductCode = "c", Quantity = 1, Amount = 20 };
             Cart.Add(product);
-            expectedResult = Cart;
 
             Cart = promotionRepository.ApplyPromoToProductA(ref Cart);
             Cart = promotionRepository.ApplyPromoToProductB(ref Cart);
             Cart = promotionRepository.ApplyPromoToProductC(ref Cart);
             Cart = promotionRepository.ApplyPromoToProductD(ref Cart);
 
-            Assert.ReferenceEquals(Cart, expectedResult);
+            expectedResult = 0;
+            int result = 0;
+            if (Cart.Any(x => x.Discount > 0))
+            {
+                result = Cart.Where(x => x.IsPromoApplied).FirstOrDefault().Discount;
+            }
+
+            Assert.AreEqual(expectedResult, result);
         }
 
 
         [TestMethod]
-        public void Scenario2() { }
+        public void Scenario2()
+        {
+            List<Product> Cart = new List<Product>();
+            product = new Product() { ProductCode = "A", Quantity = 5, Amount = 250 };// promo will give 20 discount
+            Cart.Add(product);
+            product = new Product() { ProductCode = "b", Quantity = 5, Amount = 150 }; // promo will give 30 discount
+            Cart.Add(product);
+            product = new Product() { ProductCode = "c", Quantity = 1, Amount = 20 };
+            Cart.Add(product);
+            
+            Cart = promotionRepository.ApplyPromoToProductA(ref Cart);
+            Cart = promotionRepository.ApplyPromoToProductB(ref Cart);
+            Cart = promotionRepository.ApplyPromoToProductC(ref Cart);
+            Cart = promotionRepository.ApplyPromoToProductD(ref Cart);
+
+            expectedResult = 30;
+            int result = 0;
+            if (Cart.Any(x => x.Discount > 0))
+            {
+                result = Cart.Where(x => x.IsPromoApplied).FirstOrDefault().Discount;
+            }
+
+            Assert.AreEqual(expectedResult, result);
+        }
 
 
         [TestMethod]
-        public void Scenario3() { }
+        public void Scenario3() {
+        
+        }
 
         [TestMethod]
         public void Scenario4() { }
